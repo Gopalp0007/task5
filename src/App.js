@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+
+import useFetch from "./hooks/useFetch";
+import "./App.css";
 
 function App() {
+  const { data, loading, error, refetch } = useFetch(
+    "https://api.escuelajs.co/api/v1/products"
+  );
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>React Custom Hook - useFetch</h1>
+{/* 
+      <button onClick={refetch}>Reload Data</button> */}
+
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <div className="products">
+        {data &&
+          data.slice(0, 6).map((item) => (
+            <div key={item.id} className="card">
+              <img src={item.images[0]} alt={item.title} />
+              <h3>{item.title}</h3>
+              <p>${item.price}</p>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }
